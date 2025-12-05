@@ -1,7 +1,8 @@
 {
-  "name": "a",
+  "name": "ac.sno2wman.net",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -12,6 +13,5 @@
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.4",
     "tailwindcss": "^4.1.17"
-  },
-  "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b"
+  }
 }
