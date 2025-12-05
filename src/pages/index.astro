@@ -1,0 +1,128 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import DefaultLayout from "../layouts/DefaultLayout.astro";
+
+const allSoftware = await getCollection("software");
+const allTalks = (await getCollection("talks")).toSorted((a, b) =>
+  b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+ 
+<DefaultLayout title="ホームページ">
+<section>
+	<hgroup>
+		<h1 class="text-2xl font-bold text-slate-950">
+			ac.sno2wman.net
+		</h1>
+		<p class="mt-2 text-slate-900">
+			<span>野口 真柊</span>
+			<br />
+			<span>Mashu Noguchi</span>
+		</p>
+	</hgroup>
+
+	<p class="text-md mt-8 text-slate-900">
+		様相論理と定理証明支援系について興味があります．
+	</p>
+ 
+		<h2 class="mt-8 text-xl font-bold text-slate-950">連絡先</h2>
+		<p class="text-md mt-4 text-slate-900">
+			<address class="not-italic">
+				神戸大学大学院 システム情報学研究科 情報数理研究室
+				<br />
+				<a href="mailto:251x054x@gsuite.kobe-u.ac.jp" class="font-mono underline text-slate-600 text-sm">251x054x@gsuite.kobe-u.ac.jp</a>
+				<!--
+					<br />
+					<a	a href="mailto:me@sno2wman.net" class="font-mono underline text-slate-600 text-sm">me@sno2wman.net</a>
+				 -->
+			</address>
+		</p>
+		
+		<h2 class="mt-8 text-xl font-bold text-slate-950">ソフトウェア</h2>
+		<ol class="mt-4 list-decimal pl-4 space-y-4">
+			{allSoftware.map(({data:{name,url,slug,authors,relatedTalks}}) => ( 
+				<li>
+					<article id={"software-" + slug}>
+						<h3 class="text-lg text-slate-900 font-serif italic font-bold">
+							<a href={"#software-" + slug}>{name}</a>
+						</h3>
+						<p class="text-sm text-slate-600">
+							<a href={url} class="underline font-mono">{url}</a>
+						</p>
+						<p class="text-sm text-slate-600 mt-2">
+							{
+								Array.isArray(authors) ? authors.map(author => typeof author === "string" ? author : author.name).join(", ") : authors
+							}
+						</p>
+						{
+							relatedTalks && (
+								<>
+									<h4 class="text-sm text-slate-600 mt-2">関連発表</h4>
+									<ul class="list-disc pl-4 mt-1 space-y-1">
+									{
+										relatedTalks?.map(async ({id,collection}) => {
+											const talk = await getEntry(collection, id);
+											if (!talk?.data) return null;
+											return (
+												<li class="text-sm text-slate-600">
+													<a href={"#talk-" + talk.data.slug}>{talk?.data.title}</a>
+												</li>
+											);
+										})
+									} 
+									</ul>
+								</>
+							)
+							
+						}
+					</article>
+				</li>
+			))}
+		</ol> 
+
+		<h2 class="mt-8 text-xl font-bold text-slate-950">口頭発表</h2>
+		<ol class="mt-4 list-decimal pl-4 space-y-4">
+			{allTalks.map(({data:{title,slug,authors,conference,date,materials}}) => ( 
+				<li>
+					<article id={"talk-" + slug}>
+						<h3 class="text-lg text-slate-900 font-serif italic font-bold"> 
+							<a href={"#talk-" + slug}>{title}</a>
+						</h3>
+						<p class="text-sm text-slate-600 mt-2">
+							{
+								Array.isArray(authors) ? authors.map(author => typeof author === "string" ? author : author.name).join(", ") : authors
+							}
+						</p>
+						<p class="text-sm text-slate-600 mt-1">
+							<time datetime={date.toDateString()} class="font-mono">{date.toLocaleDateString("ja-JP")}</time> 
+							
+							
+							<span>
+							{
+								conference.url ? (
+									<a href={conference.url} class="underline">{conference.name}</a>
+								) : 
+								(
+									conference.name
+								)
+							}
+							</span>
+
+							@
+							
+							<span>{conference.at}</span>
+						</p>
+						
+						<p class="text-sm text-slate-600">
+						{
+							materials?.map(({name,url}, index) => (
+								<a href={url} class="underline mr-2">{name}</a>
+							))
+						}
+						</p>
+					</article>
+				</li>
+			))}
+		</ol> 
+</section>
+</DefaultLayout>
