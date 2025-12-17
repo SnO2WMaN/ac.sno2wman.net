@@ -1,0 +1,81 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import DefaultLayout from "../layouts/DefaultLayout.astro";
+
+const allPosts = (await getCollection("formalizations")).toSorted(
+  (a, b) => b.data.lastUpdate.valueOf() - a.data.lastUpdate.valueOf()
+);
+---
+
+<DefaultLayout title={"形式化"}>
+  <section>
+    <h2 class="mt-8 text-xl text-slate-950">形式化</h2>
+    <p class="font-serif mt-2">
+      主に定理証明支援系を用いて形式化した成果物を置いておきます．
+    </p>
+
+    <ol class="mt-4 list-decimal pl-4 space-y-4">
+      {
+        allPosts.map(
+          ({ data: { name, url, authors, related }, id: id, rendered }) => (
+            <li>
+              <article id={id}>
+                <h3 class="text-lg text-slate-900 font-sans">
+                  <a href={"#" + id}>{name}</a>
+                </h3>
+                <ul class="text-sm text-slate-600 list-none flex space-x-2 font-serif">
+                  {Array.isArray(authors) ? (
+                    authors.map((author) => (
+                      <li>
+                        {typeof author === "object" && author.me ? (
+                          <strong class="font-bold">{author.name}</strong>
+                        ) : typeof author === "object" ? (
+                          author.name
+                        ) : (
+                          author
+                        )}
+                      </li>
+                    ))
+                  ) : (
+                    <li>
+                      <strong class="font-bold">{authors}</strong>
+                    </li>
+                  )}
+                </ul>
+                <div class="text-sm mt-2 text-slate-900 font-serif">
+                  <Fragment set:html={rendered?.html} />
+                </div>
+                <p class="text-sm text-slate-600 mt-2">
+                  <a href={url} class="underline font-mono">
+                    {url}
+                  </a>
+                </p>
+                {related && (
+                  <>
+                    <h4 class="text-sm text-slate-600 mt-2">関連発表</h4>
+                    <ul class="list-disc pl-4 mt-1 space-y-1 text-sm text-slate-600 font-serif">
+                      {related.map(async ({ entry }) => {
+                        const rel = await getEntry(entry.collection, entry.id);
+                        if (!rel?.data) return null;
+                        return (
+                          <li>
+                            <a
+                              href={"/" + entry.collection + "#" + rel.id}
+                              class="underline"
+                            >
+                              {rel?.data.title}
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </>
+                )}
+              </article>
+            </li>
+          )
+        )
+      }
+    </ol>
+  </section>
+</DefaultLayout>

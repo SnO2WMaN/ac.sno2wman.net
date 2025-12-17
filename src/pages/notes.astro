@@ -1,0 +1,41 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import DefaultLayout from "../layouts/DefaultLayout.astro";
+
+const allPosts = (await getCollection("notes")).toSorted(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<DefaultLayout title={"メモ"}>
+  <section>
+    <h2 class="mt-8 text-xl text-slate-950">メモ</h2>
+    <p class="font-serif mt-2">
+      勉強したことやちょっとしたメモなどを置いておきます．
+    </p>
+
+    <ol class="mt-4 list-decimal pl-4 space-y-4">
+      {
+        allPosts.map(({ data: { title, materials }, id, rendered }) => (
+          <li>
+            <article id={id}>
+              <h3 class="text-lg text-slate-900 font-sans">
+                <a href={"#" + id}>{title}</a>
+              </h3>
+              <div class="text-sm mt-2 text-slate-900 font-serif">
+                <Fragment set:html={rendered?.html} />
+              </div>
+              <p class="text-sm text-slate-600 font-serif">
+                {materials?.map(({ name, url }, index) => (
+                  <a href={url} class="underline mr-2">
+                    {name}
+                  </a>
+                ))}
+              </p>
+            </article>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</DefaultLayout>

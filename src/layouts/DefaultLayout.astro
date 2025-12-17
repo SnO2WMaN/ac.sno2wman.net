@@ -1,20 +1,49 @@
 ---
 import "../styles/global.css";
+import "katex/dist/katex.css";
 
 const { title } = Astro.props;
 ---
 
 <html lang="ja">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>ac.sno2wman.net</title>
-	</head>
-	<body class="bg-slate-50 py-12">
-		<div class="container mx-auto px-8">
-			<slot />
-		</div>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Shippori+Antique&family=Shippori+Mincho:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+
+  <body class="bg-slate-50 py-16 overflow-y-scroll">
+    <div class="container mx-auto px-8">
+      <hgroup>
+        <h1 class="text-2xl font-bold text-slate-950 font-mono">
+          <a href="/">ac.sno2wman.net</a>
+        </h1>
+        <p class="mt-2 text-slate-900 font-serif">
+          <span>野口 真柊</span>
+          <br />
+          <span>Mashu Noguchi</span>
+        </p>
+      </hgroup>
+      <nav class="flex space-x-4 mt-4">
+        <div>
+          <a href="/formalizations" class="underline">形式化</a>
+        </div>
+        <div>
+          <a href="/talks" class="underline">口頭発表</a>
+        </div>
+        <div>
+          <a href="/notes" class="underline">メモ</a>
+        </div>
+      </nav>
+      <slot />
+    </div>
+  </body>
 </html>

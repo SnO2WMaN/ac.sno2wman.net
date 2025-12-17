@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@theme {
+  --font-serif: "Shippori Mincho", sans-serif;
+  --font-sans: "Shippori Antique", sans;
+  --font-mono: "JetBrains Mono", monospace;
+}

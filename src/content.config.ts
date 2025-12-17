@@ -8,7 +8,6 @@ const talks = defineCollection({
   }),
   schema: z.object({
     title: z.string(),
-    slug: z.string(),
     authors: z.union([
       z.string(),
       z.array(
@@ -33,23 +32,57 @@ const talks = defineCollection({
   }),
 });
 
-const software = defineCollection({
+const notes = defineCollection({
   loader: glob({
     pattern: "**/*.md",
-    base: "./src/software",
+    base: "./src/notes",
+  }),
+  schema: z.object({
+    title: z.string(),
+    date: z.date(),
+    materials: z.array(
+      z.object({
+        name: z.string(),
+        url: z.string().url(),
+      })
+    ),
+  }),
+});
+
+const formalizations = defineCollection({
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./src/formalizations",
   }),
   schema: z.object({
     name: z.string(),
     url: z.string().url(),
-    slug: z.string(),
     authors: z.union([
       z.string(),
       z.array(
         z.union([z.string(), z.object({ name: z.string(), me: z.boolean() })])
       ),
     ]),
-    relatedTalks: z.array(reference("talks")).optional(),
+    lastUpdate: z.date(),
+    related: z
+      .array(
+        z.union([
+          z.object({
+            type: z.literal("talks"),
+            entry: reference("talks"),
+          }),
+          z.object({
+            type: z.literal("notes"),
+            entry: reference("notes"),
+          }),
+        ])
+      )
+      .optional(),
   }),
 });
 
-export const collections = { talks: talks, software: software };
+export const collections = {
+  talks: talks,
+  formalizations: formalizations,
+  notes,
+};
