@@ -11,4 +11,7 @@ conference:
   name: 第60回 MLG数理論理学研究集会
   at: 神戸大学
   url: https://www2.kobe-u.ac.jp/~tk/jp/workshop/MLG2025/
+materials:
+  - name: slides
+    url: https://sno2wman.github.io/slides-for-MLG60/main.pdf
 ---
