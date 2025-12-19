@@ -1,6 +1,6 @@
 ---
 title: Very Weak Subintuitionistic Logic 
-slug: MLG2025
+slug: MLG60
 authors: 
 - name: 野口 真柊
   me: true
