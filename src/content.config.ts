@@ -1,10 +1,10 @@
 import { defineCollection, reference, z } from "astro:content";
 import { glob } from "astro/loaders"; // Not available with legacy API
 
-const publications = defineCollection({
+const preprints = defineCollection({
   loader: glob({
     pattern: "**/*.md",
-    base: "./src/publications",
+    base: "./src/preprints",
   }),
   schema: z.object({
     title: z.string(),
@@ -111,5 +111,5 @@ export const collections = {
   talks: talks,
   formalizations: formalizations,
   notes,
-  publications,
+  preprints,
 };

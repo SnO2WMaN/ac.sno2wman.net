@@ -2,8 +2,8 @@
 import { getCollection, getEntry } from "astro:content";
 import DefaultLayout from "../layouts/DefaultLayout.astro";
 
-const allPublications = (await getCollection("publications")).toSorted(
-  (a, b) => b.data.lastUpdate.valueOf() - a.data.lastUpdate.valueOf(),
+const allPreprints = (await getCollection("preprints")).toSorted(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 
 const allFormalizations = (await getCollection("formalizations")).toSorted(
@@ -42,15 +42,15 @@ const allTalks = (await getCollection("talks")).toSorted(
 
   <section>
     <h2
-      id="publications"
+      id="preprints"
       class="mt-8 text-xl text-slate-950 border-l-4 border-s-slate-700 pl-4"
     >
-      出版物
+      プレプリント
     </h2>
 
     <ol class="mt-4 list-decimal pl-4 space-y-4">
       {
-        allPublications.map(
+        allPreprints.map(
           ({ data: { title, authors, date, materials }, id: id, rendered }) => (
             <li>
               <article id={id}>
