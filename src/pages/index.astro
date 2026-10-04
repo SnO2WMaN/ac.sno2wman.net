@@ -222,7 +222,13 @@ const allTalks = (await getCollection("talks")).toSorted(
                         return (
                           <li>
                             <a
-                              href={"/" + entry.collection + "#" + rel.id}
+                              href={
+                                (entry.collection === "notes"
+                                  ? "/notes"
+                                  : "/") +
+                                "#" +
+                                rel.id
+                              }
                               class="underline"
                             >
                               {rel?.data.title}
